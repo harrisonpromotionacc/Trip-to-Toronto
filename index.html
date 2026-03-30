@@ -9,41 +9,34 @@
     <style>
         :root { --pink: #FFD1DC; --hot-pink: #FF8FA3; --blue: #A2D2FF; --text: #5D5D5D; }
         body { font-family: "Microsoft JhengHei", sans-serif; background-color: #FFF9FA; margin: 0; padding: 0; color: var(--text); overflow-x: hidden; }
-        
-        /* Header */
         .header { background: var(--pink); padding: 20px 15px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
         
         /* 左右捲動日期欄 */
-        .scroll-wrapper { background: white; padding: 15px 0; overflow-x: auto; white-space: nowrap; display: flex; gap: 10px; padding-left: 15px; -webkit-overflow-scrolling: touch; }
-        .scroll-wrapper::-webkit-scrollbar { display: none; } /* 隱藏 scrollbar */
-        
-        .date-item { display: inline-block; min-width: 65px; padding: 10px; border-radius: 15px; border: 2px solid var(--pink); text-align: center; background: white; cursor: pointer; transition: 0.3s; }
-        .date-item.active { background: var(--hot-pink); border-color: var(--hot-pink); color: white; transform: scale(1.05); }
-        .date-item .wkday { font-size: 12px; margin-bottom: 5px; }
-        .date-item .daynum { font-size: 18px; font-weight: bold; }
-        .today-tag { font-size: 10px; background: #FF4D6D; color: white; padding: 2px 5px; border-radius: 5px; margin-top: 2px; display: inline-block; }
+        .scroll-wrapper { background: white; padding: 15px 0; overflow-x: auto; white-space: nowrap; display: flex; gap: 10px; padding-left: 15px; -webkit-overflow-scrolling: touch; border-bottom: 1px solid #eee; }
+        .scroll-wrapper::-webkit-scrollbar { display: none; }
+        .date-item { display: inline-block; min-width: 60px; padding: 10px 5px; border-radius: 15px; border: 2px solid var(--pink); text-align: center; background: white; cursor: pointer; }
+        .date-item.active { background: var(--hot-pink); border-color: var(--hot-pink); color: white; transform: scale(1.05); box-shadow: 0 4px 8px rgba(255,143,163,0.3); }
+        .date-item .wkday { font-size: 12px; margin-bottom: 3px; }
+        .date-item .daynum { font-size: 16px; font-weight: bold; }
+        .today-tag { font-size: 10px; background: #FF4D6D; color: white; padding: 1px 4px; border-radius: 4px; margin-top: 2px; }
 
         .container { padding: 15px; }
-        .home-btn { background: var(--hot-pink); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; font-size: 20px; font-weight: bold; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(255,143,163,0.4); text-decoration: none; border: none; }
+        .home-btn { background: var(--hot-pink); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; font-size: 20px; font-weight: bold; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(255,143,163,0.4); text-decoration: none; }
         
         .card { background: white; border-radius: 25px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 2px solid var(--pink); }
         .event { border-left: 4px solid var(--blue); padding-left: 15px; margin-bottom: 25px; position: relative; }
         .time { font-size: 15px; color: #7aa7ff; font-weight: bold; margin-bottom: 5px; }
         .desc { font-size: 19px; font-weight: bold; line-height: 1.4; color: #333; }
-        .tag { display: inline-block; padding: 4px 10px; border-radius: 10px; font-size: 13px; margin-right: 5px; color: white; font-weight: bold; margin-top: 8px; }
+        .tag { display: inline-block; padding: 3px 8px; border-radius: 8px; font-size: 12px; margin-right: 5px; color: white; font-weight: bold; margin-top: 5px; }
         .tag-eat { background: #FFA500; } .tag-buy { background: #FF69B4; } .tag-tip { background: #4CC9F0; }
     </style>
 </head>
 <body>
     <div id="app">
-        <div class="header">
-            <h1 style="color:white; margin:0; font-size: 22px;">🌸 多倫多旅遊小助手 🌸</h1>
-        </div>
+        <div class="header"><h1 style="color:white; margin:0; font-size: 22px;">🌸 多倫多旅遊小助手 🌸</h1></div>
 
         <div class="scroll-wrapper" id="dateScroll">
-            <div v-for="(d, i) in days" :key="i" 
-                 :class="['date-item', currentIdx === i ? 'active' : '']"
-                 @click="currentIdx = i">
+            <div v-for="(d, i) in days" :key="i" :class="['date-item', currentIdx === i ? 'active' : '']" @click="currentIdx = i">
                 <div class="wkday">{{d.weekday}}</div>
                 <div class="daynum">{{d.dateShort}}</div>
                 <div v-if="d.isToday" class="today-tag">今日</div>
@@ -51,20 +44,13 @@
         </div>
 
         <div class="container">
-            <button @click="goHome" class="home-btn">
-                <i class="fas fa-home"></i> 帶我回屋企 (145 Canon)
-            </button>
-
+            <button @click="goHome" class="home-btn"><i class="fas fa-home"></i> 帶我回屋企 (145 Canon)</button>
             <div class="card">
-                <h3 style="margin-top:0; color: var(--hot-pink); border-bottom: 2px solid var(--pink); padding-bottom: 10px;">
-                    📍 {{days[currentIdx].fullDate}} 行程
-                </h3>
+                <h3 style="margin-top:0; color: var(--hot-pink);">📍 {{days[currentIdx].fullDate}} (第{{currentIdx+1}}日)</h3>
                 <div v-for="(ev, idx) in days[currentIdx].events" :key="idx" class="event">
                     <div class="time"><i class="far fa-clock"></i> {{ev.timeRange}}</div>
                     <div class="desc">{{ev.desc}}</div>
-                    <div v-if="ev.tags">
-                        <span v-for="t in ev.tags" :class="['tag', 'tag-'+t.type]">{{t.label}}</span>
-                    </div>
+                    <div v-if="ev.tags"><span v-for="t in ev.tags" :class="['tag', 'tag-'+t.type]">{{t.label}}</span></div>
                 </div>
             </div>
         </div>
@@ -77,33 +63,47 @@
                 return {
                     currentIdx: 0,
                     days: [
-                        { fullDate: "6月29日", dateShort: "29/6", weekday: "一", isToday: false, events: [{ timeRange: "09:00 - 12:00", desc: "抵達機場 & 接機" }, { timeRange: "13:00 - 15:00", desc: "屋企附近熟悉環境", tags: [{type:'tip', label:'買日用品'}] }] },
-                        { fullDate: "6月30日", dateShort: "30/6", weekday: "二", isToday: false, events: [{ timeRange: "12:00 - 14:00", desc: "吃中餐 (粥/中式餐廳)" }, { timeRange: "14:00 - 18:00", desc: "在家休息調整時差" }] },
-                        { fullDate: "7月1日", dateShort: "1/7", weekday: "三", isToday: false, events: [{ timeRange: "13:00 - 16:00", desc: "市中心熱點: 伊頓中心 / 多倫多路牌", tags: [{type:'buy', label:'必買: Roots'}] }, { timeRange: "16:00 - 18:00", desc: "聖羅倫斯市場逛街", tags: [{type:'eat', label:'必吃: 培根捲'}] }] },
-                        { fullDate: "7月4日", dateShort: "4/7", weekday: "六", isToday: false, events: [{ timeRange: "12:00 - 14:00", desc: "尼亞加拉大瀑布 - 坐船", tags: [{type:'tip', label:'準備雨衣'}] }, { timeRange: "14:00 - 17:00", desc: "遊客區觀光", tags: [{type:'eat', label:'景觀餐廳'}] }] },
-                        { fullDate: "7月5日", dateShort: "5/7", weekday: "日", isToday: false, events: [{ timeRange: "14:00 - 17:00", desc: "前往採摘車利子 (Cherry)", tags: [{type:'buy', label:'手信: 果醬'}] }] },
-                        { fullDate: "7月11日", dateShort: "11/7", weekday: "六", isToday: false, events: [{ timeRange: "13:00 - 17:00", desc: "太古廣場購物 (Pacific Mall)", tags: [{type:'eat', label:'港式美食'}] }] },
-                        { fullDate: "7月12日", dateShort: "12/7", weekday: "日", isToday: false, events: [{ timeRange: "13:00 - 16:00", desc: "士嘉堡大斷崖 (Scarborough Bluffs)", tags: [{type:'tip', label:'影相打卡'}] }] },
-                        { fullDate: "7月16日", dateShort: "16/7", weekday: "四", isToday: false, events: [{ timeRange: "13:00 - 17:00", desc: "多倫多動物園", tags: [{type:'tip', label:'行好多路'}] }] },
-                        { fullDate: "7月21日", dateShort: "21/7", weekday: "二", isToday: false, events: [{ timeRange: "12:00 - 15:00", desc: "起程前往機場回港", tags: [{type:'tip', label:'帶齊證件'}] }] }
+                        { fullDate: "6月29日", dateShort: "29/6", weekday: "一", isToday: false, events: [{ timeRange: "09:00 - 12:00", desc: "抵達皮爾遜機場 & 接機" }, { timeRange: "13:00 - 18:00", desc: "屋企附近熟悉環境、買日用品", tags: [{type:'tip', label:'買菜/休息'}] }] },
+                        { fullDate: "6月30日", dateShort: "30/6", weekday: "二", isToday: false, events: [{ timeRange: "12:00 - 14:00", desc: "吃午餐 (中式餐廳)" }, { timeRange: "14:00 - 18:00", desc: "在家休息調整時差" }] },
+                        { fullDate: "7月1日", dateShort: "1/7", weekday: "三", isToday: false, events: [{ timeRange: "13:00 - 15:00", desc: "伊頓中心 (Eaton Center) & 多倫多路牌", tags: [{type:'buy', label:'必買: Roots'}] }, { timeRange: "15:00 - 18:00", desc: "聖羅倫斯市場 (St Lawrence Market)", tags: [{type:'eat', label:'必吃: 培根捲'}] }] },
+                        { fullDate: "7月2日", dateShort: "2/7", weekday: "四", isToday: false, events: [{ timeRange: "全日", desc: "自由活動 - 附近公園散步" }] },
+                        { fullDate: "7月3日", dateShort: "3/7", weekday: "五", isToday: false, events: [{ timeRange: "全日", desc: "自由活動 - 悠閒下午茶" }] },
+                        { fullDate: "7月4日", dateShort: "4/7", weekday: "六", isToday: false, events: [{ timeRange: "12:00 - 14:00", desc: "尼亞加拉大瀑布 - 坐船", tags: [{type:'tip', label:'準備雨衣'}] }, { timeRange: "14:00 - 18:00", desc: "遊客區玩樂觀光", tags: [{type:'eat', label:'景觀餐廳'}] }] },
+                        { fullDate: "7月5日", dateShort: "5/7", weekday: "日", isToday: false, events: [{ timeRange: "14:00 - 18:00", desc: "前往採摘車利子 (Cherry Picking)", tags: [{type:'buy', label:'手信: 果醬'}] }] },
+                        { fullDate: "7月6日", dateShort: "6/7", weekday: "一", isToday: false, events: [{ timeRange: "12:00 - 14:00", desc: "飲早茶" }, { timeRange: "全日", desc: "市內自由活動" }] },
+                        { fullDate: "7月7日", dateShort: "7/7", weekday: "二", isToday: false, events: [{ timeRange: "全日", desc: "附近超市購物" }] },
+                        { fullDate: "7月8日", dateShort: "8/7", weekday: "三", isToday: false, events: [{ timeRange: "12:00 - 15:00", desc: "黃大仙廟參拜" }, { timeRange: "15:00 - 18:00", desc: "朗豪坊逛街" }] },
+                        { fullDate: "7月9日", dateShort: "9/7", weekday: "四", isToday: false, events: [{ timeRange: "12:00 - 17:00", desc: "遊景點 - 同人村" }] },
+                        { fullDate: "7月10日", dateShort: "10/7", weekday: "五", isToday: false, events: [{ timeRange: "13:00 - 18:00", desc: "巴里 (Barrie) 小鎮遊 / Elora", tags: [{type:'tip', label:'風景優美'}] }] },
+                        { fullDate: "7月11日", dateShort: "11/7", weekday: "六", isToday: false, events: [{ timeRange: "13:00 - 18:00", desc: "太古廣場購物 (Pacific Mall)", tags: [{type:'eat', label:'港式雞蛋仔'}, {type:'buy', label:'買手信'}] }] },
+                        { fullDate: "7月12日", dateShort: "12/7", weekday: "日", isToday: false, events: [{ timeRange: "14:00 - 18:00", desc: "士嘉堡大斷崖 (Bluffs)", tags: [{type:'tip', label:'必到打卡位'}] }] },
+                        { fullDate: "7月13日", dateShort: "13/7", weekday: "一", isToday: false, events: [{ timeRange: "全日", desc: "休息與市內散步" }] },
+                        { fullDate: "7月14日", dateShort: "14/7", weekday: "二", isToday: false, events: [{ timeRange: "13:00 - 18:00", desc: "浪漫小鎮: Elora / 哈密爾頓" }] },
+                        { fullDate: "7月15日", dateShort: "15/7", weekday: "三", isToday: false, events: [{ timeRange: "全日", desc: "自由活動" }] },
+                        { fullDate: "7月16日", dateShort: "16/7", weekday: "四", isToday: false, events: [{ timeRange: "13:00 - 18:00", desc: "多倫多動物園 (Zoo)", tags: [{type:'tip', label:'建議穿運動鞋'}] }] },
+                        { fullDate: "7月17日", dateShort: "17/7", weekday: "五", isToday: false, events: [{ timeRange: "全日", desc: "準備回程禮物" }] },
+                        { fullDate: "7月18日", weekday: "六", dateShort: "18/7", isToday: false, events: [{ timeRange: "全日", desc: "最後購物衝刺" }] },
+                        { fullDate: "7月19日", weekday: "日", dateShort: "19/7", isToday: false, events: [{ timeRange: "全日", desc: "休息" }] },
+                        { fullDate: "7月20日", weekday: "一", dateShort: "20/7", isToday: false, events: [{ timeRange: "15:00 - 18:00", desc: "執拾行李 & 檢查證件", tags: [{type:'tip', label:'重要!'}] }] },
+                        { fullDate: "7月21日", weekday: "二", dateShort: "21/7", isToday: false, events: [{ timeRange: "12:00 - 15:00", desc: "前往機場 - 起程回港" }] }
                     ]
                 }
             },
-            mounted() {
-                this.checkToday();
-            },
+            mounted() { this.checkToday(); },
             methods: {
                 checkToday() {
-                    const today = new Date();
-                    const tMonth = today.getMonth() + 1;
-                    const tDate = today.getDate();
-                    
-                    this.days.forEach((day, index) => {
-                        // 簡單邏輯判定今日 (例如: "6/29" 格式)
+                    const t = new Date();
+                    const m = t.getMonth() + 1;
+                    const d = t.getDate();
+                    this.days.forEach((day, i) => {
                         const parts = day.dateShort.split('/');
-                        if(parseInt(parts[0]) === tDate && parseInt(parts[1]) === tMonth) {
+                        if(parseInt(parts[0]) === d && parseInt(parts[1]) === m) {
                             day.isToday = true;
-                            this.currentIdx = index; // 自動跳轉到今日行程
+                            this.currentIdx = i;
+                            this.$nextTick(() => {
+                                const el = document.getElementById('dateScroll');
+                                if(el) el.scrollLeft = (i * 70) - 100; // 自動捲到今日
+                            });
                         }
                     });
                 },
