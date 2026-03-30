@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>爸媽多倫多之旅 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-color: #fff5f7; --primary-pink: #ffb7c5; --accent-blue: #a2d2ff; --text-color: #5d5d5d; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; }
+        .card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(255,183,197,0.3); margin-bottom: 20px; border: 2px solid var(--primary-pink); }
+        h1 { color: #ff8fa3; text-align: center; font-size: 24px; }
+        .home-btn { background-color: #ff8fa3; color: white; border: none; padding: 15px; border-radius: 50px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .day-select { width: 100%; padding: 12px; border-radius: 15px; border: 2px solid var(--primary-pink); font-size: 16px; margin-bottom: 20px; }
+        .time-item { border-left: 3px solid var(--accent-blue); padding-left: 15px; margin-bottom: 15px; position: relative; }
+        .time-tag { font-weight: bold; color: #4a90e2; font-size: 14px; }
+        .activity { font-size: 18px; font-weight: bold; margin: 5px 0; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 12px; margin-right: 5px; color: white; }
+        .food { background-color: #ffa500; } .gift { background-color: #ff69b4; } .tip { background-color: #20b2aa; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>🌸 爸媽多倫多假期 🌸</h1>
+        
+        <button class="home-btn" @click="goHome">
+            <i class="fas fa-home"></i> 帶我回屋企 (步行導航)
+        </button>
+
+        <div class="card">
+            <label>📅 揀選日期：</label>
+            <select class="day-select" v-model="selectedDay">
+                <option v-for="(day, index) in itinerary" :key="index" :value="index">
+                    第 {{index + 1}} 日 ({{day.date}}) - {{day.title}}
+                </option>
+            </select>
+
+            <div v-if="itinerary[selectedDay]">
+                <h3>今日天氣預測：☀️ 22°C - 28°C</h3>
+                <div v-for="item in itinerary[selectedDay].events" class="time-item">
+                    <div class="time-tag">{{item.time}}</div>
+                    <div class="activity">{{item.activity}}</div>
+                    <div v-if="item.tags">
+                        <span v-for="tag in item.tags" :class="['badge', tag.type]">{{tag.text}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    selectedDay: 0,
+                    // 這裡我簡化了你的行程數據，你可以自行按格式添加
+                    itinerary: [
+                        { date: "6月29日", title: "抵達多倫多", events: [
+                            { time: "09:00 - 12:00", activity: "抵達皮爾遜機場 & 接機" },
+                            { time: "13:00 - 14:00", activity: "附近走走 & 熟悉環境", tags: [{type:'tip', text:'重要：屋企密碼 1234'}] }
+                        ]},
+                        { date: "7月11日", title: "尼亞加拉大瀑布", events: [
+                            { time: "10:00 - 14:00", activity: "搭船睇瀑布 (Maid of the Mist)", tags: [{type:'food', text:'必吃：瀑布景觀餐廳'}] },
+                            { time: "14:00 - 16:00", activity: "逛遊客區", tags: [{type:'gift', text:'必買：楓糖餅乾'}] }
+                        ]}
+                    ]
+                }
+            },
+            methods: {
+                goHome() {
+                    const address = encodeURIComponent("145 Canon Jackson Drive, Toronto");
+                    window.location.href = `https://www.google.com/maps/dir/?api=1&destination=${address}&travelmode=walking`;
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
