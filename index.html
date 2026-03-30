@@ -8,91 +8,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --pink: #FFD1DC; --hot-pink: #FF8FA3; --blue: #A2D2FF; --text: #5D5D5D; }
-        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #FFF9FA; margin: 0; padding: 0; color: var(--text); overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-        .header { background: var(--pink); padding: 15px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        
-        .scroll-wrapper { background: white; padding: 12px 0; overflow-x: auto; white-space: nowrap; display: flex; gap: 10px; padding-left: 15px; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #FFF9FA; margin: 0; padding: 0; color: var(--text); overflow-x: hidden; }
+        .header { background: var(--pink); padding: 15px; text-align: center; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
+        .scroll-wrapper { background: white; padding: 12px 0; overflow-x: auto; white-space: nowrap; display: flex; gap: 8px; padding-left: 15px; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
         .scroll-wrapper::-webkit-scrollbar { display: none; }
-        .date-item { display: inline-block; min-width: 55px; padding: 8px 5px; border-radius: 12px; border: 2px solid var(--pink); text-align: center; background: white; transition: 0.2s; }
-        .date-item.active { background: var(--hot-pink); border-color: var(--hot-pink); color: white; box-shadow: 0 4px 8px rgba(255,143,163,0.3); }
-
+        .date-item { display: inline-block; min-width: 55px; padding: 8px 5px; border-radius: 12px; border: 2px solid var(--pink); text-align: center; background: white; }
+        .date-item.active { background: var(--hot-pink); border-color: var(--hot-pink); color: white; }
         .container { padding: 15px; }
-        
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .btn { border: none; border-radius: 15px; color: white; padding: 15px 10px; font-size: 16px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; text-decoration: none; }
-        .btn-home { background: var(--hot-pink); grid-column: span 2; font-size: 18px; }
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .btn { border: none; border-radius: 12px; color: white; padding: 12px 5px; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; text-decoration: none; text-align: center; }
+        .btn-home { background: var(--hot-pink); grid-column: span 2; font-size: 16px; }
         .btn-whatsapp { background: #25D366; }
         .btn-location { background: #3498db; grid-column: span 2; }
-
-        .status-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; font-size: 14px; font-weight: bold; background: #fff; padding: 10px 15px; border-radius: 50px; border: 1px solid var(--pink); }
+        .status-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 14px; font-weight: bold; background: #fff; padding: 8px 12px; border-radius: 50px; border: 1px solid var(--pink); }
         .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
-
-        .card { background: white; border-radius: 20px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid var(--pink); }
-        .section-title { font-size: 16px; color: var(--hot-pink); font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        
-        .event { border-left: 3px solid var(--blue); padding-left: 12px; margin-bottom: 15px; }
-        .time { font-size: 13px; color: #7aa7ff; font-weight: bold; }
-        .spot-link { color: #007AFF; text-decoration: underline; cursor: pointer; font-size: 18px; font-weight: bold; display: block; margin: 5px 0; }
-        .spot-info { background: #f0f7ff; padding: 12px; border-radius: 10px; font-size: 14px; color: #444; margin-top: 8px; line-height: 1.6; border: 1px dashed #A2D2FF; }
-        
-        .food-item { background: #fdf2f4; padding: 10px; border-radius: 10px; margin-top: 8px; border-left: 3px solid var(--hot-pink); }
+        .card { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); margin-bottom: 12px; border: 1px solid var(--pink); }
+        .section-title { font-size: 15px; color: var(--hot-pink); font-weight: bold; margin-bottom: 10px; }
+        .event { border-left: 3px solid var(--blue); padding-left: 12px; margin-bottom: 12px; }
+        .time { font-size: 12px; color: #7aa7ff; font-weight: bold; }
+        .spot-link { color: #007AFF; text-decoration: underline; cursor: pointer; font-size: 17px; font-weight: bold; margin: 3px 0; display: block; }
+        .spot-info { background: #f0f7ff; padding: 10px; border-radius: 8px; font-size: 13px; color: #444; margin-top: 5px; line-height: 1.5; border: 1px dashed #A2D2FF; }
     </style>
 </head>
 <body>
     <div id="app">
-        <div class="header"><h1 style="color:white; margin:0; font-size: 20px;">🌸 爸媽多倫多之旅 2026 🌸</h1></div>
-
+        <div class="header"><h1 style="color:white; margin:0; font-size: 18px;">🌸 爸媽旅遊導航助手 🌸</h1></div>
         <div class="scroll-wrapper" id="dateScroll">
-            <div v-for="(d, i) in days" :key="i" :class="['date-item', currentIdx === i ? 'active' : '']" @click="currentIdx = i">
-                <div style="font-size:11px;">{{d.weekday}}</div>
-                <div style="font-size:15px; font-weight:bold;">{{d.dateShort}}</div>
-                <div v-if="d.isToday" style="font-size:9px; background: #FF4D6D; border-radius:4px; padding:1px;">今日</div>
+            <div v-for="(d, i) in days" :class="['date-item', currentIdx === i ? 'active' : '']" @click="currentIdx = i">
+                <div style="font-size:10px;">{{d.wk}}</div>
+                <div style="font-size:14px; font-weight:bold;">{{d.ds}}</div>
+                <div v-if="d.isToday" style="font-size:9px;">今日</div>
             </div>
         </div>
-
         <div class="container">
             <div class="action-grid">
-                <a href="https://www.google.com/maps/dir/?api=1&destination=145+Canon+Jackson+Drive,Toronto" class="btn btn-home">
-                    <i class="fas fa-home"></i> 帶我回屋企 (145 Canon)
-                </a>
-                <a href="https://wa.me/14379741844" class="btn btn-whatsapp">
-                    <i class="fab fa-whatsapp"></i> 搵仔仔
-                </a>
-                <a href="https://wa.me/16475944217" class="btn btn-whatsapp">
-                    <i class="fab fa-whatsapp"></i> 搵啊恩
-                </a>
-                <button @click="shareLocation" class="btn btn-location">
-                    <i class="fas fa-map-marker-alt"></i> 話俾仔仔聽我喺邊
-                </button>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=145+Canon+Jackson+Drive,Toronto" class="btn btn-home"><i class="fas fa-home"></i> 帶我返屋企 (145 Canon)</a>
+                <a href="https://wa.me/14379741844" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> 搵仔仔</a>
+                <a href="https://wa.me/16475944217" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> 搵啊恩</a>
+                <button @click="shareLocation" class="btn btn-location"><i class="fas fa-map-marker-alt"></i> 話俾仔仔聽我喺邊</button>
             </div>
-
             <div class="status-bar">
-                <span class="dot" :style="{backgroundColor: getWorkColor(days[currentIdx].workStatus)}"></span>
-                <span>仔仔今日：{{days[currentIdx].workStatus}}</span>
+                <span class="dot" :style="{backgroundColor: getWorkColor(days[currentIdx].work)}"></span>
+                <span>仔仔今日：{{days[currentIdx].work}}</span>
             </div>
-
             <div class="card">
-                <div class="section-title"><i class="fas fa-calendar-alt"></i> 今日行程 (點擊藍字看介紹)</div>
-                <div v-for="(ev, idx) in days[currentIdx].events" :key="idx" class="event">
-                    <div class="time">{{ev.timeRange}}</div>
-                    <div v-if="ev.info" class="spot-link" @click="ev.show = !ev.show">
-                        {{ev.desc}} <i :class="ev.show ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" style="font-size:12px;"></i>
-                    </div>
-                    <div v-else style="font-size:18px; font-weight:bold; margin:5px 0;">{{ev.desc}}</div>
+                <div class="section-title"><i class="fas fa-map-signs"></i> 行程 (點擊藍字睇介紹)</div>
+                <div v-for="ev in days[currentIdx].evs" class="event">
+                    <div class="time">{{ev.t}}</div>
+                    <div v-if="ev.info" class="spot-link" @click="ev.show = !ev.show">{{ev.d}} <i class="fas fa-info-circle" style="font-size:12px;"></i></div>
+                    <div v-else style="font-size:17px; font-weight:bold;">{{ev.d}}</div>
                     <div v-show="ev.show" class="spot-info">{{ev.info}}</div>
                 </div>
             </div>
-
             <div class="card" v-if="days[currentIdx].meals">
-                <div class="section-title"><i class="fas fa-utensils"></i> 今日飲食安排</div>
-                <div v-for="meal in days[currentIdx].meals" class="food-item">
-                    <div style="font-size:12px; color: var(--hot-pink); font-weight:bold;">{{meal.type}}</div>
-                    <div style="font-size:15px;">{{meal.menu}}</div>
+                <div class="section-title"><i class="fas fa-utensils"></i> 今日飲食</div>
+                <div v-for="m in days[currentIdx].meals" style="font-size:14px; margin-top:5px;">
+                    <b style="color:var(--hot-pink)">{{m.type}}:</b> {{m.menu}}
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         const { createApp } = Vue;
         createApp({
@@ -100,85 +75,50 @@
                 return {
                     currentIdx: 0,
                     days: [
-                        { dateShort: "29/6", weekday: "一", workStatus: "請假接機", isToday: false,
-                          meals: [{type: "晚餐", menu: "在家吃熱飯菜"}],
-                          events: [{ timeRange: "09:00 - 12:00", desc: "抵達機場 & 接機", info: "多倫多皮爾遜國際機場 (YYZ) 是加拿大最繁忙的樞紐。仔仔會準時在接機大堂等候。機場內有清晰中文指示，你們領取行李後跟著 Exit 出口走就能看到接機區域。不用擔心，我們會隨時保持聯絡！", show: false },
-                                   { timeRange: "13:00 - 18:00", desc: "屋企附近熟悉環境", info: "帶你們看看 145 Canon 附近的環境，認識最近的超市和公園。這幾天可以先慢下來，適應一下多倫多的天氣和時差。", show: false }] },
-                        
-                        { dateShort: "30/6", weekday: "二", workStatus: "自由活動 (仔仔返工)", isToday: false,
-                          meals: [{type: "午餐", menu: "粥/中式餐廳"}, {type: "晚餐", menu: "在家食"}],
-                          events: [{ timeRange: "全日", desc: "休息調整時差", info: "時差可能會讓你們比較累，今天建議多喝水，在屋企附近公園散步，早點休息，為之後的精彩行程儲足體力。", show: false }] },
-                        
-                        { dateShort: "1/7", weekday: "三", workStatus: "國慶假期", isToday: false,
-                          meals: [{type: "午餐", menu: "聖羅倫斯市場培根漢堡"}, {type: "晚餐", menu: "市中心餐廳"}],
-                          events: [{ timeRange: "13:00 - 15:00", desc: "伊頓中心 (Eaton Center)", info: "多倫多最大商場，天花板掛滿了非常有名的加拿大鵝雕塑。商場內有超過 250 間商店，就算不買東西，看著宏偉的現代建築和熱鬧的人群也是一種享受。", show: false },
-                                   { timeRange: "15:00 - 16:00", desc: "市政廳路牌 (Toronto Sign)", info: "這裡是多倫多最經典的打卡位，巨大的彩色 TORONTO 字體噴泉池。我們會在這裡幫你們影靚相留念，背景是現代與古典並存的市政廳建築。", show: false },
-                                   { timeRange: "16:00 - 18:00", desc: "聖羅倫斯市場 (St. Lawrence Market)", info: "擁有百年歷史的世界級市場，曾被評為全球最佳食品市場。一定要試試著名的 Peameal Bacon 三文治，是多倫多特有的醃豬肉風味，口感非常紮實美味！", show: false }] },
-
-                        { dateShort: "4/7", weekday: "六", workStatus: "週末假期", isToday: false,
-                          meals: [{type: "午餐", menu: "瀑布景觀餐廳"}, {type: "晚餐", menu: "大瀑布周邊食"}],
-                          events: [{ timeRange: "12:00 - 17:00", desc: "尼亞加拉大瀑布坐船", info: "世界三大瀑布之一！我們會坐上觀光船直衝瀑布下方，近距離感受每秒萬噸水流傾瀉而下的震撼聲響和水霧。記得穿上提供的雨衣，這絕對是人生難忘的壯觀場面！", show: false }] },
-
-                        { dateShort: "5/7", weekday: "日", workStatus: "週末假期", isToday: false,
-                          meals: [{type: "午餐", menu: "農場簡餐"}, {type: "晚餐", menu: "在家食"}],
-                          events: [{ timeRange: "14:00 - 17:00", desc: "果園摘車利子 (Cherry Picking)", info: "多倫多夏日最受歡迎的親子活動。我們會走進果園，親手從樹上摘下紅透、香甜多汁的櫻桃。農場空氣清新，你們可以盡情品嚐最新鮮的夏日味道，還可以買點新鮮果醬。", show: false }] },
-
-                        { dateShort: "8/7", weekday: "三", workStatus: "請假陪同", isToday: false,
-                          meals: [{type: "午餐", menu: "飲早茶"}, {type: "晚餐", menu: "中式小菜"}],
-                          events: [{ timeRange: "12:00 - 15:00", desc: "黃大仙廟參拜", info: "多倫多黃大仙廟是當地華人的信仰中心，環境安靜、莊嚴，建築充滿傳統風格。我們可以在這裡祈求旅途平安，感受一下異國他鄉的傳統氛圍。", show: false },
-                                   { timeRange: "15:00 - 18:00", desc: "朗豪坊逛街", info: "這是一個充滿香港風味的購物商場，裡面有很多港式小店和餐飲。在這裡你們會覺得很親切，就像回到了熟悉的香港鬧市一樣。", show: false }] },
-
-                        { dateShort: "11/7", weekday: "六", workStatus: "週末假期", isToday: false,
-                          meals: [{type: "下午茶", menu: "太古港式雞蛋仔"}, {type: "晚餐", menu: "士嘉堡中餐"}],
-                          events: [{ timeRange: "13:00 - 18:00", desc: "太古廣場 (Pacific Mall)", info: "北美最大的華人室內商城，走進去就像置身旺角。這裡有數百間小舖，賣的是各式精巧電子產品和飾物。這裡也是找尋亞洲美食的好地方，我們會在那裡逛逛逛、買買買！", show: false }] },
-
-                        { dateShort: "12/7", weekday: "日", workStatus: "週末假期", isToday: false,
-                          meals: [{type: "午餐", menu: "戶外野餐"}, {type: "晚餐", menu: "燒烤或快餐"}],
-                          events: [{ timeRange: "14:00 - 18:00", desc: "士嘉堡大斷崖 (Bluffs)", info: "長達 15 公里的白色斷崖邊緣，高達 20 層樓，面向浩瀚如海的安大略湖。沙灘水清沙幼，景色絕美。我們會沿著湖邊步道散步，感受海風，是影風景照和人像照的最佳地點。", show: false }] },
-
-                        { dateShort: "16/7", weekday: "四", workStatus: "仔仔返公司 (爸媽自由)", isToday: false,
-                          meals: [{type: "午餐", menu: "動物園內簡餐"}, {type: "晚餐", menu: "外賣中餐"}],
-                          events: [{ timeRange: "13:00 - 18:00", desc: "多倫多動物園 (Zoo)", info: "加拿大最大的動物園，佔地廣闊。你們可以看到可愛的企鵝、大象、北極熊等。園內設有遊覽巴士，可以輕鬆往返不同園區。記得穿一雙好走的運動鞋，我們慢慢看動物過下午。", show: false }] },
-
-                        { dateShort: "21/7", weekday: "二", workStatus: "起程回港", isToday: false,
-                          meals: [{type: "午餐", menu: "機場簡餐"}],
-                          events: [{ timeRange: "12:00 - 15:00", desc: "前往機場回港", info: "三週的時間過得很快，今天我們要整理好心情和行李，前往機場準備回港。仔仔會陪你們辦理登記手續，確保一切順利。期待下一次再見！", show: false }] }
+                        { ds: "29/6", wk: "一", work: "請假接機", evs: [{t:"09:00-12:00", d:"皮爾遜機場接機", info:"多倫多國際機場(YYZ)係加拿大最大機場。落機拎完行李，跟『Arrivals』指示行，仔仔會喺出口等。機場有免費WiFi，唔使擔心！", show:false},{t:"下午", d:"屋企附近走走", info:"帶你哋睇下 145 Canon 附近環境，認下路，去附近超市買下嘢。", show:false}], meals:[{type:"晚餐", menu:"在家食熱飯"}] },
+                        { ds: "30/6", wk: "二", work: "自由活動", evs: [{t:"全日", d:"休息/附近超市", info:"今日留喺屋企附近休息下，適應時差。超市可以買到新鮮生果同牛奶。", show:false}], meals:[{type:"午餐", menu:"粥/中餐"}] },
+                        { ds: "1/7", wk: "三", work: "假期", evs: [{t:"13:00-18:00", d:"市中心/伊頓中心", info:"多倫多地標商場 Eaton Centre，天花吊滿飛機模型。出面係市政廳同埋必影嘅 TORONTO 彩虹路牌！", show:false},{t:"傍晚", d:"聖羅倫斯市場", info:"世界級百年市場，必食 Peameal Bacon 醃豬肉漢堡，好有特色！", show:false}], meals:[{type:"晚餐", menu:"市中心餐廳"}] },
+                        { ds: "2/7", wk: "四", work: "家中返工", evs: [{t:"全日", d:"附近公園散步", info:"今日仔仔喺屋企做嘢，你哋可以喺附近公園行下，感受加拿大寧靜環境。", show:false}] },
+                        { ds: "3/7", wk: "五", work: "家中返工", evs: [{t:"全日", d:"自由活動/休息", show:false}] },
+                        { ds: "4/7", wk: "六", work: "假期", evs: [{t:"12:00-18:00", d:"尼亞加拉大瀑布", info:"世界級自然景觀！我哋會坐觀光船(Hornblower)直接駛入瀑布下面，感受水花四濺嘅震撼。要著好雨衣呀！", show:false}] },
+                        { ds: "5/7", wk: "日", work: "假期", evs: [{t:"14:00-17:00", d:"摘車利子 (Cherry)", info:"加拿大夏天特色活動！親手喺樹上摘新鮮櫻桃，又甜又大粒，係最好玩嘅農場體驗。", show:false}] },
+                        { ds: "6/7", wk: "一", work: "家中返工", evs: [{t:"12:00", d:"飲早茶", info:"多倫多中餐好出名，我哋去食返餐熱騰騰嘅點心。", show:false}] },
+                        { ds: "7/7", wk: "二", work: "家中返工", evs: [{t:"全日", d:"超市/市內散步", show:false}] },
+                        { ds: "8/7", wk: "三", work: "請假陪同", evs: [{t:"12:00-15:00", d:"黃大仙廟", info:"多倫多黃大仙廟好靈，環境安靜莊嚴，係當地華人嘅精神寄託，可以去參拜祈福。", show:false},{t:"15:00-18:00", d:"朗豪坊", info:"港式風格商場，有好多熟識嘅港式店舖，感覺好似返咗香港咁。", show:false}] },
+                        { ds: "9/7", wk: "四", work: "請假", evs: [{t:"全日", d:"同人村景點", info:"充滿異國風情嘅地方，環境好靚，好啱行下影下相。", show:false}] },
+                        { ds: "10/7", wk: "五", work: "請假", evs: [{t:"下午", d:"巴里 Barrie/Elora", info:"安大略省著名小鎮。Elora 有壯觀嘅峽谷，Barrie 有好靚嘅湖邊步道，風景一絕！", show:false}] },
+                        { ds: "11/7", wk: "六", work: "假期", evs: [{t:"13:00-18:00", d:"太古廣場 Pacific Mall", info:"北美最大華人商場，入面好似旺角格仔舖咁，應有盡有。必食雞蛋仔同港式奶茶！", show:false}] },
+                        { ds: "12/7", wk: "日", work: "假期", evs: [{t:"14:00-18:00", d:"士嘉堡大斷崖 Bluffs", info:"白色巨大懸崖對住安大略湖，湖水清到好似海咁，係多倫多影相最靚嘅自然景點。", show:false}] },
+                        { ds: "13/7", wk: "一", work: "家中返工", evs: [{t:"全日", d:"市內散步/休息", show:false}] },
+                        { ds: "14/7", wk: "二", work: "家中返工", evs: [{t:"下午", d:"哈密爾頓 Hamilton", info:"以瀑布同自然步道出名，環境非常優美舒適。", show:false}] },
+                        { ds: "15/7", wk: "三", work: "請假陪同", evs: [{t:"下午", d:"去野生動物園 Safari", info:"坐車入去睇獅子、長頸鹿喺你車旁邊行過，非常刺激好玩！", show:false}] },
+                        { ds: "16/7", wk: "四", work: "公司返工", evs: [{t:"13:00-18:00", d:"多倫多動物園 Zoo", info:"加拿大最大動物園，分好多區，可以睇企鵝、大象，地方好大，建議著運動鞋行。", show:false}] },
+                        { ds: "17/7", wk: "五", work: "公司返工", evs: [{t:"全日", d:"自由活動/買手信", show:false}] },
+                        { ds: "18/7", wk: "六", work: "假期", evs: [{t:"下午", d:"最後購物/執行李", show:false}] },
+                        { ds: "19/7", wk: "日", work: "假期", evs: [{t:"全日", d:"休息", show:false}] },
+                        { ds: "20/7", wk: "一", work: "家中返工", evs: [{t:"下午", d:"準備回程", show:false}] },
+                        { ds: "21/7", wk: "二", work: "送機", evs: [{t:"12:00", d:"起程前往機場", info:"三星期好快過，準備返香港。仔仔會送你哋入閘，確保順利！", show:false}] }
                     ]
                 }
             },
             mounted() { this.checkToday(); },
             methods: {
-                getWorkColor(status) {
-                    if (status.includes("假期") || status.includes("請假")) return "#f1c40f";
-                    if (status.includes("自由")) return "#2ecc71";
-                    return "#95a5a6";
-                },
+                getWorkColor(s) { if(s.includes("假期")||s.includes("請假")) return "#f1c40f"; if(s.includes("自由")) return "#2ecc71"; return "#95a5a6"; },
                 checkToday() {
-                    const now = new Date();
-                    const d = now.getDate(), m = now.getMonth() + 1;
+                    const n = new Date(), d = n.getDate(), m = n.getMonth()+1;
                     this.days.forEach((day, i) => {
-                        const [dd, mm] = day.dateShort.split('/');
-                        if(parseInt(dd) === d && parseInt(mm) === m) {
-                            day.isToday = true;
-                            this.currentIdx = i;
-                            this.$nextTick(() => {
-                                const el = document.getElementById('dateScroll');
-                                if(el) el.scrollLeft = (i * 65) - 100;
-                            });
+                        const [dd, mm] = day.ds.split('/');
+                        if(parseInt(dd)===d && parseInt(mm)===m) {
+                            day.isToday = true; this.currentIdx = i;
+                            this.$nextTick(() => { document.getElementById('dateScroll').scrollLeft = (i*60)-80; });
                         }
                     });
                 },
                 shareLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition((pos) => {
-                            const lat = pos.coords.latitude, lng = pos.coords.longitude;
-                            const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-                            const text = encodeURIComponent(`仔仔，我依家喺呢度：${mapUrl}`);
-                            window.location.href = `https://wa.me/14379741844?text=${text}`;
-                        }, () => {
-                            alert("請允許 App 獲取定位權限。");
-                        });
-                    }
+                    navigator.geolocation.getCurrentPosition(p => {
+                        const url = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
+                        window.location.href = `https://wa.me/14379741844?text=${encodeURIComponent('仔仔，我依家喺度：'+url)}`;
+                    }, () => alert("請開啟定位權限"));
                 }
             }
         }).mount('#app')
