@@ -3,93 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>多倫多 21 日遊小工具</title>
+    <title>🌸 爸媽多倫多假期 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --main-pink: #FFD1DC; --dark-pink: #FF8FA3; --soft-blue: #BDE0FE; --text: #4A4A4A; }
-        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #FFF9FA; color: var(--text); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        .header { background: var(--main-pink); padding: 25px 15px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .header h1 { margin: 0; font-size: 24px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        :root { --pink: #FFD1DC; --hot-pink: #FF8FA3; --blue: #A2D2FF; --text: #5D5D5D; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #FFF9FA; margin: 0; padding: 0; color: var(--text); }
+        .header { background: var(--pink); padding: 25px 15px; text-align: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
         .container { padding: 15px; }
-        .home-btn { background: var(--dark-pink); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; font-size: 20px; font-weight: bold; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(255, 143, 163, 0.4); }
-        .day-picker { background: white; border: 2px solid var(--main-pink); border-radius: 15px; padding: 15px; margin-bottom: 20px; }
-        select { width: 100%; border: none; font-size: 18px; color: var(--text); outline: none; background: transparent; }
-        .itinerary-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .time-slot { border-left: 4px solid var(--soft-blue); padding-left: 15px; margin-bottom: 25px; position: relative; }
-        .time-text { font-size: 14px; color: #999; font-weight: bold; }
-        .act-text { font-size: 19px; font-weight: bold; margin: 5px 0; color: #333; }
-        .tag { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 13px; margin-top: 5px; margin-right: 5px; color: white; font-weight: bold; }
-        .tag-eat { background: #FF9F1C; } .tag-buy { background: #FF4D6D; } .tag-tip { background: #4CC9F0; }
-        .weather-info { text-align: right; font-size: 14px; color: #666; margin-bottom: 10px; }
+        .home-btn { background: var(--hot-pink); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; font-size: 20px; font-weight: bold; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(255,143,163,0.4); text-decoration: none; cursor: pointer; }
+        .card { background: white; border-radius: 25px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 2px solid var(--pink); }
+        select { width: 100%; padding: 12px; border-radius: 15px; border: 2px solid var(--pink); font-size: 18px; color: var(--text); background: white; -webkit-appearance: none; }
+        .event { border-left: 4px solid var(--blue); padding-left: 15px; margin-bottom: 25px; }
+        .time { font-size: 14px; color: #999; font-weight: bold; }
+        .desc { font-size: 19px; font-weight: bold; margin: 5px 0; line-height: 1.4; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 10px; font-size: 13px; margin-right: 5px; color: white; font-weight: bold; margin-top: 5px; }
+        .tag-eat { background: #FFA500; } .tag-buy { background: #FF69B4; } .tag-tip { background: #4CC9F0; }
+        .day-title { font-size: 22px; color: var(--hot-pink); margin-bottom: 15px; border-bottom: 1px dashed var(--pink); padding-bottom: 10px; }
     </style>
 </head>
 <body>
     <div id="app">
         <div class="header">
-            <h1>🌸 歡迎黎到多倫多！ 🌸</h1>
+            <h1 style="color:white; margin:0; font-size: 24px;">🌸 爸媽多倫多之旅 🌸</h1>
+            <p style="color:white; margin-top:5px; font-weight: bold;">{{days[currentIdx].date}} ({{days[currentIdx].weekday}})</p>
         </div>
-
         <div class="container">
-            <button class="home-btn" @click="goHome">
-                <i class="fas fa-walking"></i> 帶我回屋企
-            </button>
-
-            <div class="day-picker">
-                <label style="font-size: 14px; color: #aaa;">選擇行程日期：</label>
-                <select v-model="currentDayIdx">
-                    <option v-for="(d, i) in days" :key="i" :value="i">
-                        第 {{i+1}} 日 - {{d.date}} ({{d.weekday}})
-                    </option>
+            <button @click="goHome" class="home-btn"><i class="fas fa-walking"></i> 一鍵導航回屋企</button>
+            <div class="card">
+                <label style="font-weight:bold; color: var(--hot-pink); font-size: 14px;">📅 選擇日期：</label>
+                <select v-model="currentIdx">
+                    <option v-for="(d, i) in days" :key="i" :value="i">第 {{i+1}} 日 - {{d.date}}</option>
                 </select>
             </div>
-
-            <div class="itinerary-card" v-if="days[currentDayIdx]">
-                <div class="weather-info">
-                    <i class="fas fa-sun"></i> 預計平均 22°C - 26°C
-                </div>
-                <h2 style="margin-top: 0; color: var(--dark-pink);">{{days[currentDayIdx].date}} 行程</h2>
-                
-                <div v-for="(item, idx) in days[currentDayIdx].events" :key="idx" class="time-slot">
-                    <div class="time-text">{{item.time}}</div>
-                    <div class="act-text">{{item.desc}}</div>
-                    <div v-if="item.tags">
-                        <span v-for="t in item.tags" :class="['tag', 'tag-'+t.type]">{{t.label}}</span>
-                    </div>
+            <div class="card">
+                <div class="day-title">第 {{currentIdx + 1}} 日：{{days[currentIdx].title || '自由活動'}}</div>
+                <div v-for="(ev, idx) in days[currentIdx].events" :key="idx" class="event">
+                    <div class="time">{{ev.time}}</div>
+                    <div class="desc">{{ev.desc}}</div>
+                    <div v-if="ev.tags"><span v-for="t in ev.tags" :class="['tag', 'tag-'+t.type]">{{t.label}}</span></div>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         const { createApp } = Vue;
         createApp({
             data() {
                 return {
-                    currentDayIdx: 0,
+                    currentIdx: 0,
                     days: [
-                        { date: "6月29日", weekday: "星期一", events: [
-                            { time: "09:00", desc: "抵達皮爾遜機場 & 接機" },
-                            { time: "12:00", desc: "休息 & 整理行李" },
-                            { time: "13:00", desc: "附近走走熟悉環境", tags: [{type:'tip', label:'屋企附近有超市'}] }
-                        ]},
-                        { date: "7月1日", weekday: "星期三", events: [
-                            { time: "13:00", desc: "多倫多市中心遊覽 (伊頓中心 / 多倫多路牌)", tags: [{type:'buy', label:'必買：Roots 衫'}] },
-                            { time: "14:00", desc: "聖羅倫斯市場", tags: [{type:'eat', label:'必吃：培根捲'}] }
-                        ]},
-                        { date: "7月11日", weekday: "星期六", events: [
-                            { time: "12:00", desc: "尼亞加拉大瀑布 - 坐船睇瀑布", tags: [{type:'tip', label:'準備雨衣'}, {type:'eat', label:'必吃：瀑布餐廳'}] },
-                            { time: "14:00", desc: "摘櫻桃 (車利子) 體驗", tags: [{type:'buy', label:'手信：櫻桃果醬'}] }
-                        ]},
-                        // 這裡可以繼續添加剩下的天數...
+                        { date: "6月29日", weekday: "星期一", title: "抵達多倫多", events: [{ time: "09:00", desc: "抵達皮爾遜機場 & 接機" }, { time: "13:00", desc: "附近走走熟悉環境", tags: [{type:'tip', label:'買日用品/買菜'}] }] },
+                        { date: "6月30日", weekday: "星期二", title: "休息與調整", events: [{ time: "全日", desc: "在家休息、調整時差、整理行李" }] },
+                        { date: "7月1日", weekday: "星期三", title: "市中心熱點遊", events: [{ time: "13:00", desc: "伊頓中心 (Eaton Center) & 多倫多路牌", tags: [{type:'buy', label:'必買: Roots'}] }, { time: "15:00", desc: "聖羅倫斯市場 (St Lawrence Market)", tags: [{type:'eat', label:'必吃: 培根捲'}] }] },
+                        { date: "7月2日", weekday: "星期四", title: "自由活動", events: [{ time: "全日", desc: "仔仔上班，屋企附近逛逛" }] },
+                        { date: "7月3日", weekday: "星期五", title: "自由活動", events: [{ time: "全日", desc: "悠閒下午茶 / 公園散步" }] },
+                        { date: "7月4日", weekday: "星期六", title: "震撼大瀑布", events: [{ time: "12:00", desc: "尼亞加拉大瀑布 坐船睇瀑布", tags: [{type:'tip', label:'準備雨衣'}] }, { time: "15:00", desc: "瀑布遊客區玩樂", tags: [{type:'eat', label:'景觀餐廳'}] }] },
+                        { date: "7月5日", weekday: "星期日", title: "摘車利子體驗", events: [{ time: "14:00", desc: "前往果園摘車利子 (櫻桃)", tags: [{type:'buy', label:'必買: 鮮果醬'}] }] },
+                        { date: "7月6日", weekday: "星期一", title: "自由活動", events: [{ time: "12:00", desc: "飲早茶 / 休息" }] },
+                        { date: "7月7日", weekday: "星期二", title: "自由活動", events: [{ time: "全日", desc: "附近超市購物" }] },
+                        { date: "7月8日", weekday: "星期三", title: "景點漫遊", events: [{ time: "13:00", desc: "黃大仙廟參拜 / 朗豪坊逛街" }] },
+                        { date: "7月9日", weekday: "星期四", title: "景點漫遊", events: [{ time: "13:00", desc: "同人村參觀" }] },
+                        { date: "7月10日", weekday: "星期五", title: "景點漫遊", events: [{ time: "13:00", desc: "巴里 (Barrie) 小鎮遊" }] },
+                        { date: "7月11日", weekday: "星期六", title: "港味太古廣場", events: [{ time: "13:00", desc: "太古廣場 (Pacific Mall)", tags: [{type:'buy', label:'買手信'}, {type:'eat', label:'必食港式雞蛋仔'}] }] },
+                        { date: "7月12日", weekday: "星期日", title: "沙灘大斷崖", events: [{ time: "14:00", desc: "士嘉堡沙灘 (Scarborough Bluffs)", tags: [{type:'tip', label:'影相極靚'}] }] },
+                        { date: "7月13日", weekday: "星期一", title: "自由活動", events: [{ time: "全日", desc: "市內休閒遊" }] },
+                        { date: "7月14日", weekday: "星期二", title: "浪漫小鎮遊", events: [{ time: "13:00", desc: "Elora 小鎮 / 哈密​​頓" }] },
+                        { date: "7月15日", weekday: "星期三", title: "自由活動", events: [{ time: "12:00", desc: "休息" }] },
+                        { date: "7月16日", weekday: "星期四", title: "多倫多動物園", events: [{ time: "13:00", desc: "Toronto Zoo 看動物", tags: [{type:'tip', label:'建議穿好走路的鞋'}] }] },
+                        { date: "7月17日", weekday: "星期五", title: "自由活動", events: [{ time: "全日", desc: "準備禮物" }] },
+                        { date: "7月18日", weekday: "星期六", title: "自由活動", events: [{ time: "全日", desc: "最後購物衝刺" }] },
+                        { date: "7月19日", weekday: "星期日", title: "自由活動", events: [{ time: "全日", desc: "休息" }] },
+                        { date: "7月20日", weekday: "星期一", title: "收拾心情", events: [{ time: "15:00", desc: "執拾行李 & 檢查護照", tags: [{type:'tip', label:'不要漏掉充電器'}] }] },
+                        { date: "7月21日", weekday: "星期二", title: "起程回港", events: [{ time: "12:00", desc: "前往機場 - 回港", tags: [{type:'tip', label:'帶齊證件'}] }] }
                     ]
                 }
             },
             methods: {
                 goHome() {
-                    // 145 Canon Jackson Drive 導航
-                    const url = "https://www.google.com/maps/dir/?api=1&destination=145+Canon+Jackson+Drive,Toronto&travelmode=walking";
-                    window.location.href = url;
+                    const destination = encodeURIComponent("145 Canon Jackson Drive, Toronto");
+                    window.location.href = `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=walking`;
                 }
             }
         }).mount('#app')
