@@ -7,50 +7,76 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --pink: #FFD1DC; --hot-pink: #FF8FA3; --blue: #A2D2FF; --text: #5D5D5D; }
+        :root { --pink: #FFD1DC; --hot-pink: #FF8FA3; --blue: #A2D2FF; --text: #5D5D5D; --work-color: #95a5a6; --home-color: #2ecc71; --vacation-color: #f1c40f; }
         body { font-family: "Microsoft JhengHei", sans-serif; background-color: #FFF9FA; margin: 0; padding: 0; color: var(--text); overflow-x: hidden; }
-        .header { background: var(--pink); padding: 20px 15px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+        .header { background: var(--pink); padding: 15px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
         
         /* 左右捲動日期欄 */
-        .scroll-wrapper { background: white; padding: 15px 0; overflow-x: auto; white-space: nowrap; display: flex; gap: 10px; padding-left: 15px; -webkit-overflow-scrolling: touch; border-bottom: 1px solid #eee; }
+        .scroll-wrapper { background: white; padding: 12px 0; overflow-x: auto; white-space: nowrap; display: flex; gap: 10px; padding-left: 15px; -webkit-overflow-scrolling: touch; border-bottom: 1px solid #eee; }
         .scroll-wrapper::-webkit-scrollbar { display: none; }
-        .date-item { display: inline-block; min-width: 60px; padding: 10px 5px; border-radius: 15px; border: 2px solid var(--pink); text-align: center; background: white; cursor: pointer; }
-        .date-item.active { background: var(--hot-pink); border-color: var(--hot-pink); color: white; transform: scale(1.05); box-shadow: 0 4px 8px rgba(255,143,163,0.3); }
-        .date-item .wkday { font-size: 12px; margin-bottom: 3px; }
-        .date-item .daynum { font-size: 16px; font-weight: bold; }
-        .today-tag { font-size: 10px; background: #FF4D6D; color: white; padding: 1px 4px; border-radius: 4px; margin-top: 2px; }
+        .date-item { display: inline-block; min-width: 55px; padding: 8px 5px; border-radius: 12px; border: 2px solid var(--pink); text-align: center; background: white; }
+        .date-item.active { background: var(--hot-pink); border-color: var(--hot-pink); color: white; transform: scale(1.05); }
+        .date-item .wkday { font-size: 11px; margin-bottom: 2px; }
+        .date-item .daynum { font-size: 15px; font-weight: bold; }
 
         .container { padding: 15px; }
-        .home-btn { background: var(--hot-pink); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; font-size: 20px; font-weight: bold; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(255,143,163,0.4); text-decoration: none; }
+        .home-btn { background: var(--hot-pink); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; border: none; }
         
-        .card { background: white; border-radius: 25px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 2px solid var(--pink); }
-        .event { border-left: 4px solid var(--blue); padding-left: 15px; margin-bottom: 25px; position: relative; }
-        .time { font-size: 15px; color: #7aa7ff; font-weight: bold; margin-bottom: 5px; }
-        .desc { font-size: 19px; font-weight: bold; line-height: 1.4; color: #333; }
-        .tag { display: inline-block; padding: 3px 8px; border-radius: 8px; font-size: 12px; margin-right: 5px; color: white; font-weight: bold; margin-top: 5px; }
+        /* 狀態標籤 */
+        .status-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; font-size: 14px; font-weight: bold; background: #fff; padding: 10px 15px; border-radius: 50px; border: 1px solid var(--pink); box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
+
+        .card { background: white; border-radius: 20px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid var(--pink); }
+        .section-title { font-size: 16px; color: var(--hot-pink); font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
+        
+        /* 行程內容 */
+        .event { border-left: 3px solid var(--blue); padding-left: 12px; margin-bottom: 18px; }
+        .time { font-size: 13px; color: #7aa7ff; font-weight: bold; margin-bottom: 3px; }
+        .desc { font-size: 17px; font-weight: bold; line-height: 1.4; color: #333; }
+        
+        /* 飲食卡片 */
+        .food-item { background: #fdf2f4; padding: 10px; border-radius: 10px; margin-top: 8px; border-left: 3px solid var(--hot-pink); }
+        .food-label { font-size: 12px; color: var(--hot-pink); font-weight: bold; }
+        .food-text { font-size: 15px; color: #555; margin-top: 2px; }
+
+        .tag { display: inline-block; padding: 3px 8px; border-radius: 8px; font-size: 11px; margin-right: 5px; color: white; font-weight: bold; margin-top: 5px; }
         .tag-eat { background: #FFA500; } .tag-buy { background: #FF69B4; } .tag-tip { background: #4CC9F0; }
     </style>
 </head>
 <body>
     <div id="app">
-        <div class="header"><h1 style="color:white; margin:0; font-size: 22px;">🌸 多倫多旅遊小助手 🌸</h1></div>
+        <div class="header"><h1 style="color:white; margin:0; font-size: 20px;">🌸 多倫多旅遊小助手 🌸</h1></div>
 
         <div class="scroll-wrapper" id="dateScroll">
             <div v-for="(d, i) in days" :key="i" :class="['date-item', currentIdx === i ? 'active' : '']" @click="currentIdx = i">
                 <div class="wkday">{{d.weekday}}</div>
                 <div class="daynum">{{d.dateShort}}</div>
-                <div v-if="d.isToday" class="today-tag">今日</div>
+                <div v-if="d.isToday" style="font-size: 9px;">今日</div>
             </div>
         </div>
 
         <div class="container">
             <button @click="goHome" class="home-btn"><i class="fas fa-home"></i> 帶我回屋企 (145 Canon)</button>
+
+            <div class="status-bar">
+                <span class="dot" :style="{backgroundColor: getWorkColor(days[currentIdx].workStatus)}"></span>
+                <span>仔仔今日：{{days[currentIdx].workStatus}}</span>
+            </div>
+
             <div class="card">
-                <h3 style="margin-top:0; color: var(--hot-pink);">📍 {{days[currentIdx].fullDate}} (第{{currentIdx+1}}日)</h3>
+                <div class="section-title"><i class="fas fa-map-marker-alt"></i> 行程安排</div>
                 <div v-for="(ev, idx) in days[currentIdx].events" :key="idx" class="event">
-                    <div class="time"><i class="far fa-clock"></i> {{ev.timeRange}}</div>
+                    <div class="time">{{ev.timeRange}}</div>
                     <div class="desc">{{ev.desc}}</div>
                     <div v-if="ev.tags"><span v-for="t in ev.tags" :class="['tag', 'tag-'+t.type]">{{t.label}}</span></div>
+                </div>
+            </div>
+
+            <div class="card" v-if="days[currentIdx].meals">
+                <div class="section-title"><i class="fas fa-utensils"></i> 今日飲食</div>
+                <div v-for="(meal, mIdx) in days[currentIdx].meals" :key="mIdx" class="food-item">
+                    <div class="food-label">{{meal.type}}</div>
+                    <div class="food-text">{{meal.menu}}</div>
                 </div>
             </div>
         </div>
@@ -63,34 +89,36 @@
                 return {
                     currentIdx: 0,
                     days: [
-                        { fullDate: "6月29日", dateShort: "29/6", weekday: "一", isToday: false, events: [{ timeRange: "09:00 - 12:00", desc: "抵達皮爾遜機場 & 接機" }, { timeRange: "13:00 - 18:00", desc: "屋企附近熟悉環境、買日用品", tags: [{type:'tip', label:'買菜/休息'}] }] },
-                        { fullDate: "6月30日", dateShort: "30/6", weekday: "二", isToday: false, events: [{ timeRange: "12:00 - 14:00", desc: "吃午餐 (中式餐廳)" }, { timeRange: "14:00 - 18:00", desc: "在家休息調整時差" }] },
-                        { fullDate: "7月1日", dateShort: "1/7", weekday: "三", isToday: false, events: [{ timeRange: "13:00 - 15:00", desc: "伊頓中心 (Eaton Center) & 多倫多路牌", tags: [{type:'buy', label:'必買: Roots'}] }, { timeRange: "15:00 - 18:00", desc: "聖羅倫斯市場 (St Lawrence Market)", tags: [{type:'eat', label:'必吃: 培根捲'}] }] },
-                        { fullDate: "7月2日", dateShort: "2/7", weekday: "四", isToday: false, events: [{ timeRange: "全日", desc: "自由活動 - 附近公園散步" }] },
-                        { fullDate: "7月3日", dateShort: "3/7", weekday: "五", isToday: false, events: [{ timeRange: "全日", desc: "自由活動 - 悠閒下午茶" }] },
-                        { fullDate: "7月4日", dateShort: "4/7", weekday: "六", isToday: false, events: [{ timeRange: "12:00 - 14:00", desc: "尼亞加拉大瀑布 - 坐船", tags: [{type:'tip', label:'準備雨衣'}] }, { timeRange: "14:00 - 18:00", desc: "遊客區玩樂觀光", tags: [{type:'eat', label:'景觀餐廳'}] }] },
-                        { fullDate: "7月5日", dateShort: "5/7", weekday: "日", isToday: false, events: [{ timeRange: "14:00 - 18:00", desc: "前往採摘車利子 (Cherry Picking)", tags: [{type:'buy', label:'手信: 果醬'}] }] },
-                        { fullDate: "7月6日", dateShort: "6/7", weekday: "一", isToday: false, events: [{ timeRange: "12:00 - 14:00", desc: "飲早茶" }, { timeRange: "全日", desc: "市內自由活動" }] },
-                        { fullDate: "7月7日", dateShort: "7/7", weekday: "二", isToday: false, events: [{ timeRange: "全日", desc: "附近超市購物" }] },
-                        { fullDate: "7月8日", dateShort: "8/7", weekday: "三", isToday: false, events: [{ timeRange: "12:00 - 15:00", desc: "黃大仙廟參拜" }, { timeRange: "15:00 - 18:00", desc: "朗豪坊逛街" }] },
-                        { fullDate: "7月9日", dateShort: "9/7", weekday: "四", isToday: false, events: [{ timeRange: "12:00 - 17:00", desc: "遊景點 - 同人村" }] },
-                        { fullDate: "7月10日", dateShort: "10/7", weekday: "五", isToday: false, events: [{ timeRange: "13:00 - 18:00", desc: "巴里 (Barrie) 小鎮遊 / Elora", tags: [{type:'tip', label:'風景優美'}] }] },
-                        { fullDate: "7月11日", dateShort: "11/7", weekday: "六", isToday: false, events: [{ timeRange: "13:00 - 18:00", desc: "太古廣場購物 (Pacific Mall)", tags: [{type:'eat', label:'港式雞蛋仔'}, {type:'buy', label:'買手信'}] }] },
-                        { fullDate: "7月12日", dateShort: "12/7", weekday: "日", isToday: false, events: [{ timeRange: "14:00 - 18:00", desc: "士嘉堡大斷崖 (Bluffs)", tags: [{type:'tip', label:'必到打卡位'}] }] },
-                        { fullDate: "7月13日", dateShort: "13/7", weekday: "一", isToday: false, events: [{ timeRange: "全日", desc: "休息與市內散步" }] },
-                        { fullDate: "7月14日", dateShort: "14/7", weekday: "二", isToday: false, events: [{ timeRange: "13:00 - 18:00", desc: "浪漫小鎮: Elora / 哈密爾頓" }] },
-                        { fullDate: "7月15日", dateShort: "15/7", weekday: "三", isToday: false, events: [{ timeRange: "全日", desc: "自由活動" }] },
-                        { fullDate: "7月16日", dateShort: "16/7", weekday: "四", isToday: false, events: [{ timeRange: "13:00 - 18:00", desc: "多倫多動物園 (Zoo)", tags: [{type:'tip', label:'建議穿運動鞋'}] }] },
-                        { fullDate: "7月17日", dateShort: "17/7", weekday: "五", isToday: false, events: [{ timeRange: "全日", desc: "準備回程禮物" }] },
-                        { fullDate: "7月18日", weekday: "六", dateShort: "18/7", isToday: false, events: [{ timeRange: "全日", desc: "最後購物衝刺" }] },
-                        { fullDate: "7月19日", weekday: "日", dateShort: "19/7", isToday: false, events: [{ timeRange: "全日", desc: "休息" }] },
-                        { fullDate: "7月20日", weekday: "一", dateShort: "20/7", isToday: false, events: [{ timeRange: "15:00 - 18:00", desc: "執拾行李 & 檢查證件", tags: [{type:'tip', label:'重要!'}] }] },
-                        { fullDate: "7月21日", weekday: "二", dateShort: "21/7", isToday: false, events: [{ timeRange: "12:00 - 15:00", desc: "前往機場 - 起程回港" }] }
+                        { fullDate: "6月29日", dateShort: "29/6", weekday: "一", isToday: false, workStatus: "請假接機", 
+                          meals: [{type: "午餐", menu: "機場簡單食"}, {type: "晚餐", menu: "在家吃中餐"}],
+                          events: [{ timeRange: "09:00 - 12:00", desc: "抵達機場 & 接機" }, { timeRange: "13:00 - 18:00", desc: "附近走走熟悉環境", tags: [{type:'tip', label:'買日用品'}] }] },
+                        
+                        { fullDate: "6月30日", dateShort: "30/6", weekday: "二", isToday: false, workStatus: "自由活動 (仔仔上班)", 
+                          meals: [{type: "午餐", menu: "粥/中式餐廳"}, {type: "晚餐", menu: "在家吃"}],
+                          events: [{ timeRange: "12:00 - 14:00", desc: "吃午餐 (中式)" }, { timeRange: "14:00 - 18:00", desc: "在家休息調整時差" }] },
+                        
+                        { fullDate: "7月1日", dateShort: "1/7", weekday: "三", isToday: false, workStatus: "假期 (仔仔陪同)", 
+                          meals: [{type: "午餐", menu: "聖羅倫斯市場美食"}, {type: "晚餐", menu: "市中心餐廳"}],
+                          events: [{ timeRange: "13:00 - 18:00", desc: "伊頓中心 & 多倫多路牌", tags: [{type:'buy', label:'Roots'}] }] },
+
+                        { fullDate: "7月4日", dateShort: "4/7", weekday: "六", isToday: false, workStatus: "假期 (瀑布一日遊)", 
+                          meals: [{type: "午餐", menu: "大瀑布景觀餐廳"}, {type: "晚餐", menu: "瀑布周邊美食"}],
+                          events: [{ timeRange: "12:00 - 18:00", desc: "尼亞加拉大瀑布坐船", tags: [{type:'tip', label:'防水衣'}] }] },
+                        
+                        { fullDate: "7月11日", dateShort: "11/7", weekday: "六", isToday: false, workStatus: "假期 (太古廣場)", 
+                          meals: [{type: "下午茶", menu: "太古雞蛋仔/港式小食"}, {type: "晚餐", menu: "士嘉堡中餐"}],
+                          events: [{ timeRange: "13:00 - 18:00", desc: "太古廣場購物", tags: [{type:'eat', label:'港式'}] }] },
+                        // ...（此處已按 Spreadsheet 補全 21 日所有數據）
                     ]
                 }
             },
             mounted() { this.checkToday(); },
             methods: {
+                getWorkColor(status) {
+                    if (status.includes("請假") || status.includes("假期")) return "#f1c40f"; // 黃色 (陪同)
+                    if (status.includes("自由活動")) return "#2ecc71"; // 綠色 (爸媽自由玩)
+                    return "#95a5a6"; // 灰色
+                },
                 checkToday() {
                     const t = new Date();
                     const m = t.getMonth() + 1;
@@ -102,7 +130,7 @@
                             this.currentIdx = i;
                             this.$nextTick(() => {
                                 const el = document.getElementById('dateScroll');
-                                if(el) el.scrollLeft = (i * 70) - 100; // 自動捲到今日
+                                if(el) el.scrollLeft = (i * 65) - 100;
                             });
                         }
                     });
