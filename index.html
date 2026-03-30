@@ -9,30 +9,31 @@
     <style>
         :root { --pink: #FFD1DC; --hot-pink: #FF8FA3; --blue: #A2D2FF; --text: #5D5D5D; }
         body { font-family: "Microsoft JhengHei", sans-serif; background-color: #FFF9FA; margin: 0; padding: 0; color: var(--text); overflow-x: hidden; }
-        .header { background: var(--pink); padding: 15px; text-align: center; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
+        .header { background: var(--pink); padding: 15px; text-align: center; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .scroll-wrapper { background: white; padding: 12px 0; overflow-x: auto; white-space: nowrap; display: flex; gap: 8px; padding-left: 15px; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
         .scroll-wrapper::-webkit-scrollbar { display: none; }
-        .date-item { display: inline-block; min-width: 55px; padding: 8px 5px; border-radius: 12px; border: 2px solid var(--pink); text-align: center; background: white; }
-        .date-item.active { background: var(--hot-pink); border-color: var(--hot-pink); color: white; }
+        .date-item { display: inline-block; min-width: 55px; padding: 10px 5px; border-radius: 12px; border: 2px solid var(--pink); text-align: center; background: white; }
+        .date-item.active { background: var(--hot-pink); border-color: var(--hot-pink); color: white; transform: scale(1.05); }
         .container { padding: 15px; }
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .btn { border: none; border-radius: 12px; color: white; padding: 12px 5px; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; text-decoration: none; text-align: center; }
-        .btn-home { background: var(--hot-pink); grid-column: span 2; font-size: 16px; }
+        .btn { border: none; border-radius: 12px; color: white; padding: 12px 5px; font-size: 15px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+        .btn-home { background: var(--hot-pink); grid-column: span 2; font-size: 18px; }
         .btn-whatsapp { background: #25D366; }
         .btn-location { background: #3498db; grid-column: span 2; }
-        .status-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 14px; font-weight: bold; background: #fff; padding: 8px 12px; border-radius: 50px; border: 1px solid var(--pink); }
+        .status-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; font-size: 14px; font-weight: bold; background: #fff; padding: 10px 15px; border-radius: 50px; border: 1px solid var(--pink); }
         .dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
-        .card { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); margin-bottom: 12px; border: 1px solid var(--pink); }
-        .section-title { font-size: 15px; color: var(--hot-pink); font-weight: bold; margin-bottom: 10px; }
-        .event { border-left: 3px solid var(--blue); padding-left: 12px; margin-bottom: 12px; }
-        .time { font-size: 12px; color: #7aa7ff; font-weight: bold; }
-        .spot-link { color: #007AFF; text-decoration: underline; cursor: pointer; font-size: 17px; font-weight: bold; margin: 3px 0; display: block; }
-        .spot-info { background: #f0f7ff; padding: 10px; border-radius: 8px; font-size: 13px; color: #444; margin-top: 5px; line-height: 1.5; border: 1px dashed #A2D2FF; }
+        .card { background: white; border-radius: 20px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid var(--pink); }
+        .section-title { font-size: 16px; color: var(--hot-pink); font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .event { border-left: 4px solid var(--blue); padding-left: 15px; margin-bottom: 18px; }
+        .time { font-size: 13px; color: #7aa7ff; font-weight: bold; margin-bottom: 5px; }
+        .spot-link { color: #007AFF; text-decoration: underline; cursor: pointer; font-size: 18px; font-weight: bold; margin-bottom: 5px; display: block; }
+        .spot-info { background: #f0f7ff; padding: 15px; border-radius: 10px; font-size: 14px; color: #444; margin-top: 10px; line-height: 1.6; border: 1px dashed #A2D2FF; }
+        .meal-box { background: #fff5f7; padding: 12px; border-radius: 12px; margin-top: 8px; border-left: 4px solid var(--hot-pink); }
     </style>
 </head>
 <body>
     <div id="app">
-        <div class="header"><h1 style="color:white; margin:0; font-size: 18px;">🌸 爸媽旅遊導航助手 🌸</h1></div>
+        <div class="header"><h1 style="color:white; margin:0; font-size: 20px;">🌸 爸媽旅遊導遊手冊 🌸</h1></div>
         <div class="scroll-wrapper" id="dateScroll">
             <div v-for="(d, i) in days" :class="['date-item', currentIdx === i ? 'active' : '']" @click="currentIdx = i">
                 <div style="font-size:10px;">{{d.wk}}</div>
@@ -52,18 +53,19 @@
                 <span>仔仔今日：{{days[currentIdx].work}}</span>
             </div>
             <div class="card">
-                <div class="section-title"><i class="fas fa-map-signs"></i> 行程 (點擊藍字睇介紹)</div>
+                <div class="section-title"><i class="fas fa-map-marked-alt"></i> 今日行程 (點擊景點睇介紹)</div>
                 <div v-for="ev in days[currentIdx].evs" class="event">
                     <div class="time">{{ev.t}}</div>
-                    <div v-if="ev.info" class="spot-link" @click="ev.show = !ev.show">{{ev.d}} <i class="fas fa-info-circle" style="font-size:12px;"></i></div>
-                    <div v-else style="font-size:17px; font-weight:bold;">{{ev.d}}</div>
+                    <div v-if="ev.info" class="spot-link" @click="ev.show = !ev.show">{{ev.d}} <i class="fas fa-info-circle"></i></div>
+                    <div v-else style="font-size:18px; font-weight:bold;">{{ev.d}}</div>
                     <div v-show="ev.show" class="spot-info">{{ev.info}}</div>
                 </div>
             </div>
-            <div class="card" v-if="days[currentIdx].meals">
-                <div class="section-title"><i class="fas fa-utensils"></i> 今日飲食</div>
-                <div v-for="m in days[currentIdx].meals" style="font-size:14px; margin-top:5px;">
-                    <b style="color:var(--hot-pink)">{{m.type}}:</b> {{m.menu}}
+            <div class="card">
+                <div class="section-title"><i class="fas fa-utensils"></i> 今日飲食安排</div>
+                <div v-for="m in days[currentIdx].meals" class="meal-box">
+                    <div style="font-size:12px; color:var(--hot-pink); font-weight:bold;">{{m.type}}</div>
+                    <div style="font-size:16px; margin-top:2px;">{{m.menu}}</div>
                 </div>
             </div>
         </div>
@@ -75,29 +77,29 @@
                 return {
                     currentIdx: 0,
                     days: [
-                        { ds: "29/6", wk: "一", work: "請假接機", evs: [{t:"09:00-12:00", d:"皮爾遜機場接機", info:"多倫多國際機場(YYZ)係加拿大最大機場。落機拎完行李，跟『Arrivals』指示行，仔仔會喺出口等。機場有免費WiFi，唔使擔心！", show:false},{t:"下午", d:"屋企附近走走", info:"帶你哋睇下 145 Canon 附近環境，認下路，去附近超市買下嘢。", show:false}], meals:[{type:"晚餐", menu:"在家食熱飯"}] },
-                        { ds: "30/6", wk: "二", work: "自由活動", evs: [{t:"全日", d:"休息/附近超市", info:"今日留喺屋企附近休息下，適應時差。超市可以買到新鮮生果同牛奶。", show:false}], meals:[{type:"午餐", menu:"粥/中餐"}] },
-                        { ds: "1/7", wk: "三", work: "假期", evs: [{t:"13:00-18:00", d:"市中心/伊頓中心", info:"多倫多地標商場 Eaton Centre，天花吊滿飛機模型。出面係市政廳同埋必影嘅 TORONTO 彩虹路牌！", show:false},{t:"傍晚", d:"聖羅倫斯市場", info:"世界級百年市場，必食 Peameal Bacon 醃豬肉漢堡，好有特色！", show:false}], meals:[{type:"晚餐", menu:"市中心餐廳"}] },
-                        { ds: "2/7", wk: "四", work: "家中返工", evs: [{t:"全日", d:"附近公園散步", info:"今日仔仔喺屋企做嘢，你哋可以喺附近公園行下，感受加拿大寧靜環境。", show:false}] },
-                        { ds: "3/7", wk: "五", work: "家中返工", evs: [{t:"全日", d:"自由活動/休息", show:false}] },
-                        { ds: "4/7", wk: "六", work: "假期", evs: [{t:"12:00-18:00", d:"尼亞加拉大瀑布", info:"世界級自然景觀！我哋會坐觀光船(Hornblower)直接駛入瀑布下面，感受水花四濺嘅震撼。要著好雨衣呀！", show:false}] },
-                        { ds: "5/7", wk: "日", work: "假期", evs: [{t:"14:00-17:00", d:"摘車利子 (Cherry)", info:"加拿大夏天特色活動！親手喺樹上摘新鮮櫻桃，又甜又大粒，係最好玩嘅農場體驗。", show:false}] },
-                        { ds: "6/7", wk: "一", work: "家中返工", evs: [{t:"12:00", d:"飲早茶", info:"多倫多中餐好出名，我哋去食返餐熱騰騰嘅點心。", show:false}] },
-                        { ds: "7/7", wk: "二", work: "家中返工", evs: [{t:"全日", d:"超市/市內散步", show:false}] },
-                        { ds: "8/7", wk: "三", work: "請假陪同", evs: [{t:"12:00-15:00", d:"黃大仙廟", info:"多倫多黃大仙廟好靈，環境安靜莊嚴，係當地華人嘅精神寄託，可以去參拜祈福。", show:false},{t:"15:00-18:00", d:"朗豪坊", info:"港式風格商場，有好多熟識嘅港式店舖，感覺好似返咗香港咁。", show:false}] },
-                        { ds: "9/7", wk: "四", work: "請假", evs: [{t:"全日", d:"同人村景點", info:"充滿異國風情嘅地方，環境好靚，好啱行下影下相。", show:false}] },
-                        { ds: "10/7", wk: "五", work: "請假", evs: [{t:"下午", d:"巴里 Barrie/Elora", info:"安大略省著名小鎮。Elora 有壯觀嘅峽谷，Barrie 有好靚嘅湖邊步道，風景一絕！", show:false}] },
-                        { ds: "11/7", wk: "六", work: "假期", evs: [{t:"13:00-18:00", d:"太古廣場 Pacific Mall", info:"北美最大華人商場，入面好似旺角格仔舖咁，應有盡有。必食雞蛋仔同港式奶茶！", show:false}] },
-                        { ds: "12/7", wk: "日", work: "假期", evs: [{t:"14:00-18:00", d:"士嘉堡大斷崖 Bluffs", info:"白色巨大懸崖對住安大略湖，湖水清到好似海咁，係多倫多影相最靚嘅自然景點。", show:false}] },
-                        { ds: "13/7", wk: "一", work: "家中返工", evs: [{t:"全日", d:"市內散步/休息", show:false}] },
-                        { ds: "14/7", wk: "二", work: "家中返工", evs: [{t:"下午", d:"哈密爾頓 Hamilton", info:"以瀑布同自然步道出名，環境非常優美舒適。", show:false}] },
-                        { ds: "15/7", wk: "三", work: "請假陪同", evs: [{t:"下午", d:"去野生動物園 Safari", info:"坐車入去睇獅子、長頸鹿喺你車旁邊行過，非常刺激好玩！", show:false}] },
-                        { ds: "16/7", wk: "四", work: "公司返工", evs: [{t:"13:00-18:00", d:"多倫多動物園 Zoo", info:"加拿大最大動物園，分好多區，可以睇企鵝、大象，地方好大，建議著運動鞋行。", show:false}] },
-                        { ds: "17/7", wk: "五", work: "公司返工", evs: [{t:"全日", d:"自由活動/買手信", show:false}] },
-                        { ds: "18/7", wk: "六", work: "假期", evs: [{t:"下午", d:"最後購物/執行李", show:false}] },
-                        { ds: "19/7", wk: "日", work: "假期", evs: [{t:"全日", d:"休息", show:false}] },
-                        { ds: "20/7", wk: "一", work: "家中返工", evs: [{t:"下午", d:"準備回程", show:false}] },
-                        { ds: "21/7", wk: "二", work: "送機", evs: [{t:"12:00", d:"起程前往機場", info:"三星期好快過，準備返香港。仔仔會送你哋入閘，確保順利！", show:false}] }
+                        { ds:"29/6", wk:"一", work:"請假接機", evs:[{t:"09:00", d:"皮爾遜機場接機", info:"多倫多皮爾遜國際機場 (YYZ) 是加拿大最繁忙的門戶。當你們落機並通過海關後，請跟著『Arrivals』指示牌行。仔仔會喺接機大廳等你們。機場內有免費 WiFi 可以聯繫。多倫多夏天陽光好猛，一出機場就會感受到加拿大的清爽空氣，我們會直接開車帶你們回 145 Canon 休息，準備迎接美好的假期！", show:false}], meals:[{type:"晚餐", menu:"屋企食熱辣辣中餐"}] },
+                        { ds:"30/6", wk:"二", work:"自由活動", evs:[{t:"全日", d:"休息調整時差", info:"時差有 12 小時，今日最重要係多飲水、多曬太陽。如果你哋覺得精神，可以喺 145 Canon 門口嘅小徑行下，呢度環境好靜好安全。附近有小超市可以買到新鮮牛奶同生果，等仔仔返工放工後再同你哋出去行。今日唔使急，慢慢適應多倫多的節奏就得啦！", show:false}], meals:[{type:"午餐", menu:"中式熱粥"}, {type:"晚餐", menu:"屋企食小菜"}] },
+                        { ds:"1/7", wk:"三", work:"假期", evs:[{t:"下午", d:"伊頓中心 & 市政廳路牌", info:"伊頓中心 (Eaton Centre) 是多倫多地標，天花板掛滿了非常有名的加拿大鵝雕塑，商場大到可以行成日。旁邊就是新、舊市政廳，門口有巨大的『TORONTO』彩虹色燈光字牌，是所有遊客必影相嘅地方！今日係國慶日 (Canada Day)，到處都會好熱鬧，大家都會著紅色衫慶祝，非常有節日氣氛！", show:false},{t:"傍晚", d:"聖羅倫斯市場", info:"擁有 200 年歷史的聖羅倫斯市場被評為全球最佳食品市場。入面充滿咗新鮮嘅芝士、火腿同海鮮。你哋一定要試試呢度最出名嘅『Peameal Bacon Roll』(醃豬肉漢堡)，佢係多倫多嘅代表美食。市場建築非常有古色古香嘅感覺，影相好靚，係感受多倫多歷史最正嘅地方！", show:false}], meals:[{type:"午餐", menu:"市場著名培根漢堡"}, {type:"晚餐", menu:"市中心特色餐廳"}] },
+                        { ds:"2/7", wk:"四", work:"家中返工", evs:[{t:"全日", d:"附近公園散步", info:"今日仔仔喺屋企返工，如果你哋想行下，屋企附近嘅公園草地好大好舒服。加拿大嘅公園通常都有好多松鼠，可以慢慢行下影下相。記得帶定水同遮，因為夏天雖然唔係好熱，但太陽好曬。如果累咗就返屋企飲杯茶睇下電視，享受悠閒嘅下午。", show:false}], meals:[{type:"午餐", menu:"屋企快餐"}, {type:"晚餐", menu:"屋企食"}] },
+                        { ds:"3/7", wk:"五", work:"家中返工", evs:[{t:"全日", d:"自由活動/休息", info:"今日繼續喺屋企附近輕鬆玩，可以去超市認下路，睇下加拿大嘅物價同香港有咩唔同。你可以睇下呢度嘅生果，通常都好新鮮同埋好多選擇。如果想試下自己煮少少嘢，超市啲食材都好齊全。總之最重要係放鬆心情！", show:false}], meals:[{type:"午餐", menu:"屋企食"}, {type:"晚餐", menu:"外賣中餐"}] },
+                        { ds:"4/7", wk:"六", work:"假期", evs:[{t:"全日", d:"尼亞加拉大瀑布", info:"尼亞加拉瀑布 (Niagara Falls) 是世界三大瀑布之一。我們會坐上『吹號手號』觀光船，直接駛去瀑布嘅正下方，感受嗰種萬馬奔騰嘅震撼水聲同水霧。記得一定要著好佢哋派嘅雨衣，因為水花會好大！瀑布區仲有好多花園同打卡點，行完之後我哋仲可以去睇下著名嘅『馬蹄形瀑布』景觀，絕對係人生必去一次嘅景點！", show:false}], meals:[{type:"午餐", menu:"大瀑布景觀餐廳"}, {type:"晚餐", menu:"瀑布小鎮美食"}] },
+                        { ds:"5/7", wk:"日", work:"假期", evs:[{t:"14:00", d:"摘車利子 (Cherry)", info:"加拿大夏天最正嘅活動就係去農場摘車利子 (櫻桃)！呢度嘅櫻桃又大粒、又鮮甜、又多汁。我哋會去農場親手喺樹上揀最靚嘅摘，摘完仲可以即場試食。農場環境好開揚，有一大片果樹，行喺中間影相好有鄉村風味。摘完返去仲可以分俾朋友或者自己慢慢食足幾日！", show:false}], meals:[{type:"午餐", menu:"農場簡餐"}, {type:"晚餐", menu:"屋企食"}] },
+                        { ds:"6/7", wk:"一", work:"家中返工", evs:[{t:"12:00", d:"飲早茶", info:"雖然身在多倫多，但呢度嘅點心水準分分鐘高過香港！我哋會去一間出名嘅酒樓，食蝦餃、燒賣、腸粉，俾你哋試下多倫多嘅『早茶文化』。飲完茶仔仔會繼續返工，你哋可以喺附近商場行下，或者返屋企休息下，享受一下加國嘅下午茶時光。", show:false}], meals:[{type:"午餐", menu:"多倫多港式早茶"}, {type:"晚餐", menu:"屋企食"}] },
+                        { ds:"7/7", wk:"二", work:"家中返工", evs:[{t:"全日", d:"附近散步/休息", info:"今日繼續輕鬆吓，可以在屋企附近行行超市，看看當地的生活用品。多倫多的超市有好多不同國家的食材，你可以去看看平時少見的西式香料或者新鮮的芝士。也可以去附近的公園坐坐，看看當地人帶狗仔散步，感受一下這份寧靜的生活節奏。", show:false}], meals:[{type:"午餐", menu:"屋企食"}, {type:"晚餐", menu:"中式小菜"}] },
+                        { ds:"8/7", wk:"三", work:"請假陪同", evs:[{t:"12:00", d:"黃大仙廟參拜", info:"多倫多的黃大仙廟環境非常寧靜莊嚴，建築充滿傳統特色。這裡唔單止係拜神嘅地方，亦係當地華人聚首嘅好去處。你哋可以去參拜祈福，保佑全家平安、旅途愉快。廟內環境修剪得好靚，行喺入面心情都會特別平靜，係一個好適合老人家慢慢行嘅地方。", show:false},{t:"15:00", d:"朗豪坊購物", info:"多倫多嘅『朗豪坊』同香港嗰個唔同，呢度更像是一個華人小型社區商場。入面有好多港式小食、精品店，甚至有賣香港報刊。你哋會發現好多熟識嘅廣東話、熟識嘅店名，感覺就好似返咗香港咁親切，係買零食同埋小禮物嘅好地方！", show:false}], meals:[{type:"午餐", menu:"中式餐廳"}, {type:"晚餐", menu:"朗豪坊美食"}] },
+                        { ds:"9/7", wk:"四", work:"請假陪同", evs:[{t:"全日", d:"同人村 (Unionville)", info:"Unionville 係一個非常有歐洲風味嘅歷史小鎮。呢度條主街 (Main Street) 兩邊都係古色古香嘅屋仔，入面有好多藝術畫廊、手工精品店同埋好靚嘅咖啡館。呢度係影相最靚嘅地方，隨便企喺街頭影都好似明信片咁。我哋會喺度慢慢行，享受一下慢活嘅感覺，累咗就坐喺路邊飲杯咖啡。", show:false}], meals:[{type:"午餐", menu:"Unionville 西式餐廳"}, {type:"晚餐", menu:"屋企食"}] },
+                        { ds:"10/7", wk:"五", work:"請假陪同", evs:[{t:"全日", d:"巴里 Barrie/Elora", info:"今日我哋會出城去睇下自然風光。Elora 以壯觀嘅峽谷 (Gorge) 同古老建築聞名，可以睇到好震撼嘅岩石地形。而 Barrie 則有一個好靚嘅湖邊步道，湖面大到好似海咁。呢兩個地方都好有加拿大嘅自然魅力，可以避開城市嘅喧鬧，呼吸一下最新鮮嘅森林空氣！", show:false}], meals:[{type:"午餐", menu:"小鎮特色午餐"}, {type:"晚餐", menu:"湖邊餐廳"}] },
+                        { ds:"11/7", wk:"六", work:"假期", evs:[{t:"13:00", d:"太古廣場 Pacific Mall", info:"太古廣場係北美最大嘅華人室內商場，入面好似旺角或者葵涌廣場咁，有好多細細間嘅格仔舖，賣衣服、電子產品、手機殼等等。最精彩嘅係個 Food Court，有超級多種類嘅亞洲小食，例如雞蛋仔、牛雜、台式飲品，你哋一定會行得好開心，可以買到好多得意嘢！", show:false}], meals:[{type:"下午茶", menu:"太古港式小食"}, {type:"晚餐", menu:"士嘉堡中餐大餐"}] },
+                        { ds:"12/7", wk:"日", work:"假期", evs:[{t:"14:00", d:"士嘉堡大斷崖 (Bluffs)", info:"士嘉堡大斷崖 (Scarborough Bluffs) 是多倫多最震撼的自然景觀之一。白色嘅斷崖連綿 15 公里，高度可以去到 20 幾層樓高，下面就係清澈見底嘅安大略湖。我哋會去斷崖下面嘅沙灘散步，呢度風景非常開揚，海風吹過嚟好舒服。呢度亦係多倫多人夏天野餐同埋影婚紗相嘅熱門地點！", show:false}], meals:[{type:"午餐", menu:"屋企野餐盒"}, {type:"晚餐", menu:"特色西餐廳"}] },
+                        { ds:"13/7", wk:"一", work:"家中返工", evs:[{t:"全日", d:"市內自由散步", info:"今日行程輕便一點，可以去附近嘅社區中心或圖書館行吓，看看當地人的休閒生活。多倫多的住宅區綠化做得很好，周圍都有大樹和草地。你可以嘗試去超市買一些香港少見的零食或者果汁，坐在花園慢慢品嚐。今日仔仔在家工作，隨時可以照顧你們。", show:false}], meals:[{type:"午餐", menu:"屋企食"}, {type:"晚餐", menu:"屋企食"}] },
+                        { ds:"14/7", wk:"二", work:"家中返工", evs:[{t:"下午", d:"哈密爾頓 (Hamilton)", info:"哈密爾頓被稱為『瀑布之城』，因為呢度有超過 100 個大大小小嘅瀑布。我哋會揀一兩個比較容易行、風景又靚嘅瀑布去參觀。呢度嘅步道設計得好好，好適合行山。睇完瀑布仲可以去碼頭區睇下大輪船，感受一下呢個工業與自然結合嘅城市風格。", show:false}], meals:[{type:"午餐", menu:"屋企食"}, {type:"晚餐", menu:"Hamilton 餐廳"}] },
+                        { ds:"15/7", wk:"三", work:"請假陪同", evs:[{t:"下午", d:"野生動物園 (Safari)", info:"呢度唔係普通嘅動物園，我哋會開車入去，獅子、長頸鹿、狒狒就喺我哋架車旁邊行過！你可以近距離睇到動物嘅動態，長頸鹿仲可能會伸個頭埋嚟睇你哋。呢個體驗非常特別，係加拿大特有嘅親子旅遊項目。記得影相時唔好開車窗呀，既刺激又安全！", show:false}], meals:[{type:"午餐", menu:"中餐"}, {type:"晚餐", menu:"Safari 周邊美食"}] },
+                        { ds:"16/7", wk:"四", work:"公司返工", evs:[{t:"13:00", d:"多倫多動物園 (Zoo)", info:"多倫多動物園是加拿大最大的動物園，佔地廣闊，分咗非洲區、美洲區同埋亞洲區。你們可以看到北極熊、犀牛、仲有好多特別嘅禽鳥。園內有遊覽車 (Zoomobile) 可以坐，唔使驚行到腳軟。我哋會揀精華區行，睇下最受歡迎嘅動物，呢度嘅環境設計得好似森林咁，行得好舒服。", show:false}], meals:[{type:"午餐", menu:"動物園內餐飲"}, {type:"晚餐", menu:"外賣中餐"}] },
+                        { ds:"17/7", wk:"五", work:"公司返工", evs:[{t:"全日", d:"最後購物衝刺", info:"旅程嚟到尾聲，今日可以去商場或者連鎖超市 (例如 Walmart 或 Costco) 買一啲加拿大特產帶返香港，例如楓糖漿、西洋參、或者係當地嘅朱古力。仔仔會俾建議你哋買啲咩手信最受歡迎。今日大家可以輕鬆啲，一邊行一邊諗下呢三個星期最鍾意邊個地方。", show:false}], meals:[{type:"午餐", menu:"屋企食"}, {type:"晚餐", menu:"豪華中餐"}] },
+                        { ds:"18/7", wk:"六", work:"假期", evs:[{t:"下午", d:"執行李/休息", info:"今日準備要返香港啦，大家一齊執下行李，確保所有手信同個人物品都執齊。仔仔會幫你哋磅下個行李有冇超重。如果執完仲有時間，我哋可以去屋企附近最後散步，或者喺花園坐下吹吹風，回味一下呢段美好嘅多倫多之旅。", show:false}], meals:[{type:"午餐", menu:"自選美食"}, {type:"晚餐", menu:"最後餞行餐"}] },
+                        { ds:"19/7", wk:"日", work:"假期", evs:[{t:"全日", d:"休息/回味之旅", info:"今日唔排任何劇烈行程，大家喺屋企好好休息，儲足精神聽日坐長途機。我哋可以一齊睇返呢幾日影嘅相，選啲最靚嘅發俾親戚朋友睇。今日會食得清淡啲，等胃口舒服啲準備上機。再次多謝爸媽嚟探我！", show:false}], meals:[{type:"午餐", menu:"屋企食"}, {type:"晚餐", menu:"屋企食"}] },
+                        { ds:"20/7", wk:"一", work:"家中返工", evs:[{t:"全日", d:"準備回程", info:"最後檢查證件、機票同埋隨身物件。仔仔會再幫你哋確認一下航班時間有冇變動。今日大家可以再回憶一下呢三個星期去過嘅地方，係咪已經玩得好盡興呢？聽日我哋會送你哋去機場，祝你們有一個順利的飛行！", show:false}], meals:[{type:"午餐", menu:"簡單午餐"}, {type:"晚餐", menu:"屋企溫馨餐"}] },
+                        { ds:"21/7", wk:"二", work:"送機", evs:[{t:"12:00", d:"起程前往機場", info:"雖然好唔捨得，但今日要起程返香港啦。我哋會提早送你哋去皮爾遜機場，幫你哋搞好晒寄行李同埋入閘手續。機場免稅店仲有最後機會買嘢。祝爸媽一路順風，返到香港再報平安！我哋好快會再見！", show:false}], meals:[{type:"午餐", menu:"機場簡餐"}] }
                     ]
                 }
             },
@@ -115,10 +117,12 @@
                     });
                 },
                 shareLocation() {
-                    navigator.geolocation.getCurrentPosition(p => {
-                        const url = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-                        window.location.href = `https://wa.me/14379741844?text=${encodeURIComponent('仔仔，我依家喺度：'+url)}`;
-                    }, () => alert("請開啟定位權限"));
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(p => {
+                            const url = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
+                            window.location.href = `https://wa.me/14379741844?text=${encodeURIComponent('仔仔，我依家喺度：'+url)}`;
+                        }, () => alert("請開啟手機定位權限"));
+                    }
                 }
             }
         }).mount('#app')
